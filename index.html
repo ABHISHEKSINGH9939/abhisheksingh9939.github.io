@@ -1,52 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abhishek Website</title>
-
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" herf="manifest.json">
+  <meta charset="UTF-8">
+  <title>Abhishek Website</title>
 </head>
-
 <body>
 
-<div class="navbar">
-    <h2>Abhishek</h2>
-</div>
+  <h2>Welcome to My Website</h2>
 
-<div class="main">
+  <button onclick="googleLogin()">Login with Google</button>
+  <button onclick="logout()">Logout</button>
 
-    <img src="mypic.jpg.jpeg" class="profile">
+  <h3 id="welcome"></h3>
 
-    <h1>Hi, I'm Abhishek 👋</h1>
+<script type="module">
 
-    <button onclick="showMessage()">Click Me</button>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { 
+  getAuth, 
+  GoogleAuthProvider, 
+  signInWithPopup,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    <button onclick="toggleDarkMode()">Dark Mode</button>
+const firebaseConfig = {
+  apiKey: "AIzaSyAcTv3Qvp3XlyQp6s6_wQ_9Ou5KR1Y-UNU",
+  authDomain: "abhishek-website-2d79f.firebaseapp.com",
+  projectId: "abhishek-website-2d79f",
+  storageBucket: "abhishek-website-2d79f.appspot.com",
+  messagingSenderId: "1002360339860",
+  appId: "1:1002360339860:web:f999538a9a20897235a381"
+};
 
-    <button onclick="openWhatsApp()">Chat on WhatsApp</button>
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
-    <p id="visitorCount"></p>
-<hr>
+window.googleLogin = function () {
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      const user = result.user;
+      document.getElementById("welcome").innerText =
+        "Welcome " + user.displayName;
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+};
 
-<h2>About Me</h2>
-<p>
-Hello! My name is Abhishek.  
-I am learning coding and website development.  
-This is my first personal website made using HTML, CSS and JavaScript.
-</p>
+window.logout = function () {
+  signOut(auth).then(() => {
+    document.getElementById("welcome").innerText = "";
+    alert("Logged out");
+  });
+};
 
-<h2>My Skills</h2>
-
-<div class="skills">
-    <p>HTML ⭐⭐⭐⭐</p>
-    <p>CSS ⭐⭐⭐</p>
-    <p>JavaScript ⭐⭐</p>
-    <p>Python ⭐⭐</p>
-</div>
-
-<script src="script.js"></script>
+</script>
 
 </body>
 </html>
